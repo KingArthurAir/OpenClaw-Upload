@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动页面</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .counter {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .label {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="label">📊 在线人数</div>
+        <div class="counter" id="onlineCount">150</div>
+        <div class="label">📉 剩余名额</div>
+        <div class="counter" id="remaining">49/50</div>
+    </div>
+    <script>
+        let onlineCount = 150;
+        let remaining = 49;
+        
+        setInterval(() => {
+            onlineCount++;
+            document.getElementById("onlineCount").textContent = onlineCount;
+        }, 5000);
+        
+        setInterval(() => {
+            if (remaining > 0) {
+                remaining--;
+                document.getElementById("remaining").textContent = remaining + "/50";
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
