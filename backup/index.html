@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="시장 브리핑 및 종목 정보 제공">
     <title>투자 정보 채널 | 무료 시장 브리핑</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
     <style>
         /* 추가 스타일 - 중앙 정렬 보장 */
         .container {
@@ -240,6 +240,37 @@
             }
         }
     </style>
+<style>
+        /* 入场动画 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            70% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .header-section { animation: fadeInUp 0.6s ease-out; }
+        .main-content { animation: fadeInUp 0.6s ease-out 0.2s backwards; }
+        .online-status { animation: fadeInUp 0.5s ease-out 0.1s backwards; }
+        .urgency-banner { animation: popIn 0.5s ease-out 0.3s backwards; }
+        .benefits-container { animation: fadeInUp 0.6s ease-out 0.4s backwards; }
+        .cta-button { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .cta-button:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(254, 229, 0, 0.5);
+        }
+        .cta-button:active { transform: scale(0.98); }
+        .counter-pop { animation: pulse 0.3s ease-out; }
+        @media (max-width: 480px) {
+            .cta-button { padding: 16px 24px; font-size: 16px; }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -248,7 +279,7 @@
             <!-- 프로필 이미지 + 인증 -->
             <div style="margin-bottom: 15px;">
                 <div style="position: relative; display: inline-block;">
-                    <img src="static/picture/tghr.jpg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #FEE500; object-fit: cover;"> 
+                    <img src="../static/picture/tghr.jpg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #FEE500; object-fit: cover;"> 
                     <span style="position: absolute; bottom: 0px; right: 0px; background: #4CAF50; color: white; padding: 2px 8px; border-radius: 8px; font-size: 9px; font-weight: 700; border: 2px solid #1e3a5f;">✓ 인증</span>
                 </div>
                 <h1 style="color: white; font-size: 20px; margin: 10px 0 6px; font-weight: 700;">염승환 투자 정보 채널</h1>
@@ -466,7 +497,17 @@
             // 更新显示
             if (onlineCountEl) onlineCountEl.textContent = onlineCount;
             if (remainingSpots1) remainingSpots1.textContent = remainingCount + "/50";
+                if (remainingSpots1) {
+                    remainingSpots1.classList.remove("counter-pop");
+                    void remainingSpots1.offsetWidth;
+                    remainingSpots1.classList.add("counter-pop");
+                }
             if (remainingSpots2) remainingSpots2.textContent = remainingCount + "/50";
+                if (remainingSpots2) {
+                    remainingSpots2.classList.remove("counter-pop");
+                    void remainingSpots2.offsetWidth;
+                    remainingSpots2.classList.add("counter-pop");
+                }
             
             // 随机秒数函数 (3-9秒之间随机)
             function getRandomInterval() {
@@ -494,7 +535,17 @@
                     if (remainingCount > MIN_REMAINING) {
                         remainingCount--;
                         if (remainingSpots1) remainingSpots1.textContent = remainingCount + "/50";
+                if (remainingSpots1) {
+                    remainingSpots1.classList.remove("counter-pop");
+                    void remainingSpots1.offsetWidth;
+                    remainingSpots1.classList.add("counter-pop");
+                }
                         if (remainingSpots2) remainingSpots2.textContent = remainingCount + "/50";
+                if (remainingSpots2) {
+                    remainingSpots2.classList.remove("counter-pop");
+                    void remainingSpots2.offsetWidth;
+                    remainingSpots2.classList.add("counter-pop");
+                }
                         localStorage.setItem(STORAGE_KEY_REMAINING, remainingCount);
                     }
                     if (remainingCount > MIN_REMAINING) {
