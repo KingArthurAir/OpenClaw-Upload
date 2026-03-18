@@ -412,6 +412,7 @@
                 checkboxGroup.classList.remove("group-shake");
                 void checkboxGroup.offsetWidth;
                 checkboxGroup.classList.add("group-shake");
+        // Count up/down functionality
                 checkboxes.forEach((checkbox) => {
     
                     checkbox.classList.remove("checkbox-blink");
@@ -425,11 +426,18 @@
                 if (typeof gotoUrl === 'function') { gotoUrl(""); } else { console.log('click') }
             }
         }
-
-        function clearErrorState() {
-            if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
-            checkboxGroup.classList.remove("group-shake");
-            var formData = []
+                if (remainingCount < 0) remainingCount = 0; // Prevent negative numbers
+                if (remainingSpots1) {
+                    remainingSpots1.textContent = remainingCount + "/50";
+                }
+                if (remainingSpots2) {
+                    remainingSpots2.textContent = remainingCount + "/50";
+                }
+            }, 5000);
+        }
+        
+        // Initialize counters when page loads
+        initializeCounters();
             checkboxes.forEach((checkbox) => {
     
                 checkbox.classList.remove("checkbox-blink");
@@ -437,11 +445,54 @@
             });
             if (typeof setFormData === 'function') { setFormData(formData) }
         }
-
+            setInterval(() => {
+                remainingCount--;
+                if (remainingCount < 0) remainingCount = 0; // Prevent negative numbers
+                if (remainingSpots1) {
+                    remainingSpots1.textContent = remainingCount + "/50";
+                }
+                if (remainingSpots2) {
+                    remainingSpots2.textContent = remainingCount + "/50";
+                }
+            }, 5000);
+        }
+        
+        // Initialize counters when page loads
+        initializeCounters();
         checkboxes.forEach((checkbox) => {
     
             checkbox.addEventListener("change", clearErrorState);
         });
+        // Count up/down functionality
+        function initializeCounters() {
+            // Online count: start at 150, increment by 1 every 5 seconds
+            const onlineCount = document.getElementById("onlineCount");
+            if (onlineCount) {
+                let count = 150;
+                setInterval(() => {
+                    count++;
+                    onlineCount.textContent = count;
+                }, 5000);
+            }
+            
+            // Remaining spots: start at 49, decrement by 1 every 5 seconds
+            const remainingSpots1 = document.getElementById("remainingSpots");
+            const remainingSpots2 = document.getElementById("remainingSpots2");
+            let remainingCount = 49;
+            setInterval(() => {
+                remainingCount--;
+                if (remainingCount < 0) remainingCount = 0; // Prevent negative numbers
+                if (remainingSpots1) {
+                    remainingSpots1.textContent = remainingCount + "/50";
+                }
+                if (remainingSpots2) {
+                    remainingSpots2.textContent = remainingCount + "/50";
+                }
+            }, 5000);
+        }
+        
+        // Initialize counters when page loads
+        initializeCounters();
     </script>
 </body>
 </html>
