@@ -278,7 +278,7 @@
             
             <!-- 긴박감 배너 -->
             <div class="urgency-banner">
-                🔥 오늘 남은 무료 진단 인원：<strong id="remainingSpots">49/50</strong>
+                🔥 오늘 남은 무료 진단 인원：<strong id="remainingSpots">30/50</strong>
             </div>
             
             <!-- 주요 CTA 버튼 -->
@@ -367,7 +367,7 @@
             <div class="special-offer">
                 <h3 style="color: #1a3a5f; font-size: 14px; margin: 0 0 12px 0; text-align: center; font-weight: 700;">🎁 지금 가입하면 특별 혜택!</h3>
                 <div class="urgency-banner">
-                    🔥 오늘 남은 무료 진단 인원：<strong id="remainingSpots2">49/50</strong>
+                    🔥 오늘 남은 무료 진단 인원：<strong id="remainingSpots2">30/50</strong>
                 </div>
                 <div style="text-align: center; margin: 15px 0;">
                     <button class="cta-button" onclick="handleClick()">💬 카카오톡 채널 추가하고 '777' 보내기<br>👉 최신 시장 정보 바로 받아보기</button>
@@ -412,45 +412,6 @@
                 checkboxGroup.classList.remove("group-shake");
                 void checkboxGroup.offsetWidth;
                 checkboxGroup.classList.add("group-shake");
-        // Count up/down functionality
-        function initializeCounters() {
-            // Online count: start at 150, increment by 1 every second
-            const onlineCount = document.getElementById("onlineCount");
-            if (onlineCount) {
-                let count = 150;
-                setInterval(() => {
-                    count++;
-                    onlineCount.textContent = count;
-                }, 1000);
-            }
-            
-            // Remaining spots: start at 30, decrement by 1 every 5 seconds
-            // Remaining spots: start at 30, decrement by 1 every 5 seconds
-            const remainingSpots1 = document.getElementById("remainingSpots");
-            const remainingSpots2 = document.getElementById("remainingSpots2");
-            let remainingCount = 30;
-            setInterval(() => {
-                remainingCount--;
-                if (remainingCount < 0) remainingCount = 0; // Prevent negative numbers
-                if (remainingSpots1) {
-                    remainingSpots1.textContent = remainingCount + "/50";
-                }
-                if (remainingSpots2) {
-                    remainingSpots2.textContent = remainingCount + "/50";
-                }
-            }, 5000);
-            if (remainingSpots) {
-                let count = 30;
-                setInterval(() => {
-                    count--;
-                    if (count < 0) count = 0; // Prevent negative numbers
-                    remainingSpots.textContent = count + "/50";
-                }, 5000);
-            }
-        }
-        
-        // Initialize counters when page loads
-        initializeCounters();
                 checkboxes.forEach((checkbox) => {
     
                     checkbox.classList.remove("checkbox-blink");
@@ -469,45 +430,6 @@
             if (errorTimer) { clearTimeout(errorTimer); errorTimer = null; }
             checkboxGroup.classList.remove("group-shake");
             var formData = []
-        // Count up/down functionality
-        function initializeCounters() {
-            // Online count: start at 150, increment by 1 every second
-            const onlineCount = document.getElementById("onlineCount");
-            if (onlineCount) {
-                let count = 150;
-                setInterval(() => {
-                    count++;
-                    onlineCount.textContent = count;
-                }, 1000);
-            }
-            
-            // Remaining spots: start at 30, decrement by 1 every 5 seconds
-            // Remaining spots: start at 30, decrement by 1 every 5 seconds
-            const remainingSpots1 = document.getElementById("remainingSpots");
-            const remainingSpots2 = document.getElementById("remainingSpots2");
-            let remainingCount = 30;
-            setInterval(() => {
-                remainingCount--;
-                if (remainingCount < 0) remainingCount = 0; // Prevent negative numbers
-                if (remainingSpots1) {
-                    remainingSpots1.textContent = remainingCount + "/50";
-                }
-                if (remainingSpots2) {
-                    remainingSpots2.textContent = remainingCount + "/50";
-                }
-            }, 5000);
-            if (remainingSpots) {
-                let count = 30;
-                setInterval(() => {
-                    count--;
-                    if (count < 0) count = 0; // Prevent negative numbers
-                    remainingSpots.textContent = count + "/50";
-                }, 5000);
-            }
-        }
-        
-        // Initialize counters when page loads
-        initializeCounters();
             checkboxes.forEach((checkbox) => {
     
                 checkbox.classList.remove("checkbox-blink");
@@ -516,45 +438,6 @@
             if (typeof setFormData === 'function') { setFormData(formData) }
         }
 
-        // Count up/down functionality
-        function initializeCounters() {
-            // Online count: start at 150, increment by 1 every second
-            const onlineCount = document.getElementById("onlineCount");
-            if (onlineCount) {
-                let count = 150;
-                setInterval(() => {
-                    count++;
-                    onlineCount.textContent = count;
-                }, 1000);
-            }
-            
-            // Remaining spots: start at 30, decrement by 1 every 5 seconds
-            // Remaining spots: start at 30, decrement by 1 every 5 seconds
-            const remainingSpots1 = document.getElementById("remainingSpots");
-            const remainingSpots2 = document.getElementById("remainingSpots2");
-            let remainingCount = 30;
-            setInterval(() => {
-                remainingCount--;
-                if (remainingCount < 0) remainingCount = 0; // Prevent negative numbers
-                if (remainingSpots1) {
-                    remainingSpots1.textContent = remainingCount + "/50";
-                }
-                if (remainingSpots2) {
-                    remainingSpots2.textContent = remainingCount + "/50";
-                }
-            }, 5000);
-            if (remainingSpots) {
-                let count = 30;
-                setInterval(() => {
-                    count--;
-                    if (count < 0) count = 0; // Prevent negative numbers
-                    remainingSpots.textContent = count + "/50";
-                }, 5000);
-            }
-        }
-        
-        // Initialize counters when page loads
-        initializeCounters();
         checkboxes.forEach((checkbox) => {
     
             checkbox.addEventListener("change", clearErrorState);
