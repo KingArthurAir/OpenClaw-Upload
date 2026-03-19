@@ -3,793 +3,508 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="시장 브리핑 및 종목 정보 제공">
     <title>투자 정보 채널 | 무료 시장 브리핑</title>
+    <link rel="stylesheet" href="static/css/style.css">
     <style>
-        /* 全新原创设计 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #10b981;
-            --dark: #111827;
-            --gray: #6b7280;
-            --light: #f9fafb;
-            --white: #ffffff;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', Roboto, sans-serif;
-            background: var(--light);
-            color: var(--dark);
-            line-height: 1.5;
-        }
-        
-        /* 渐变背景 */
-        .gradient-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-                linear-gradient(180deg, #f0f9ff 0%, #fff 100%);
-            z-index: -1;
-        }
-        
-        /* 头部Hero */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
+        /* 추가 스타일 - 중앙 정렬 보장 */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
             text-align: center;
         }
         
-        .hero-content {
-            max-width: 420px;
-            width: 100%;
+        /* 헤더 섹션 - 원래 색상 사용 */
+        .header-section {
+            background: linear-gradient(180deg, #1e3a5f 0%, #2d5a87 50%, #5a7fb5 100%);
+            padding: 30px 20px 25px;
+            text-align: center;
+            color: white;
         }
         
-        /* 头像卡片 */
-        .profile-card {
-            background: var(--white);
-            border-radius: 32px;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-            margin-bottom: 32px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-        
-        .avatar {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 16px;
-            border: 4px solid var(--white);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-        
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-            color: #166534;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        
-        .channel-name {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-        
-        .channel-desc {
-            font-size: 15px;
-            color: var(--gray);
-            margin-bottom: 24px;
-        }
-        
-        /* 统计数字 */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        
-        .stat-item {
-            background: var(--light);
-            border-radius: 16px;
-            padding: 16px 12px;
+        /* 모든 버튼과 컨텐츠 중앙 정렬 */
+        .main-content {
+            background: white;
+            padding: 25px 20px;
             text-align: center;
         }
         
-        .stat-number {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
+        .benefits-container,
+        .checkbox-group,
+        .reviews-section,
+        .special-offer {
+            text-align: left;
+            display: inline-block;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
         }
         
-        .stat-label {
-            font-size: 11px;
-            color: var(--gray);
-            margin-top: 4px;
-        }
-        
-        /* 状态条 */
-        .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 20px;
-            background: var(--dark);
-            border-radius: 16px;
-            margin-bottom: 20px;
-        }
-        
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background: #22c55e;
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.2); }
-        }
-        
-        .status-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .status-text strong {
-            color: #fff;
-            font-size: 18px;
-        }
-        
-        /* 紧迫感提示 */
-        .urgent-bar {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border: 1px solid #f59e0b;
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .urgent-bar span {
-            font-size: 15px;
-            font-weight: 600;
-            color: #92400e;
-        }
-        
-        .urgent-bar strong {
-            font-size: 18px;
-            color: #dc2626;
-        }
-        
-        /* 主按钮 */
-        .main-cta {
-            background: linear-gradient(135deg, #fee500, #ffd600);
+        /* CTA 버튼 스타일 - 원래 색상 */
+        .cta-button {
+            background: linear-gradient(135deg, #FEE500, #ffd600);
             color: #000;
             border: none;
-            padding: 18px 28px;
-            font-size: 17px;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 700;
-            border-radius: 16px;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 8px 24px rgba(254, 229, 0, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            max-width: 280px;
+            box-shadow: 0 3px 10px rgba(254,229,0,0.4);
+            margin: 15px 0 10px;
         }
         
-        .main-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(254, 229, 0, 0.5);
+        .cta-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(254,229,0,0.6);
         }
         
-        .main-cta:active {
+        .cta-button:active {
             transform: scale(0.98);
         }
         
-        .cta-sub {
-            text-align: center;
-            font-size: 13px;
-            color: var(--gray);
-            margin-top: 12px;
-        }
-        
-        /* 特色卡片 */
-        .features {
-            padding: 40px 20px;
-            max-width: 420px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .feature-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            border: 1px solid #f3f4f6;
-        }
-        
-        .feature-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 16px;
-        }
-        
-        .feature-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        .feature-icon.blue {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-        }
-        
-        .feature-icon.green {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-        }
-        
-        .feature-icon.purple {
-            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
-        }
-        
-        .feature-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .feature-list {
-            list-style: none;
-        }
-        
-        .feature-list li {
-            font-size: 14px;
-            color: var(--gray);
-            padding: 8px 0;
-            padding-left: 20px;
-            position: relative;
-        }
-        
-        .feature-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-            font-weight: 700;
-        }
-        
-        /* 选择区域 */
-        .options-section {
-            padding: 20px;
-            max-width: 420px;
-            margin: 0 auto;
-        }
-        
-        .options-card {
-            background: var(--white);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-        
-        .options-title {
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .option-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            background: var(--light);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-        }
-        
-        .option-item:hover {
-            border-color: var(--primary);
-            background: #eef2ff;
-        }
-        
-        .option-checkbox {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--primary);
-        }
-        
-        .option-text {
-            flex: 1;
-            font-size: 14px;
-            color: var(--dark);
-        }
-        
-        .option-num {
-            width: 26px;
-            height: 26px;
-            background: var(--primary);
+        /* 긴박감 배너 - 원래 스타일 */
+        .urgency-banner {
+            background: linear-gradient(135deg, #ff4444, #ff6b6b);
             color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        /* 评价 */
-        .reviews {
-            padding: 20px;
-            max-width: 420px;
-            margin: 0 auto;
-        }
-        
-        .review-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-            border-left: 4px solid var(--primary);
-        }
-        
-        .review-text {
-            font-size: 14px;
-            color: var(--dark);
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-        
-        .review-author {
-            font-size: 13px;
-            color: var(--gray);
-        }
-        
-        /* 优惠 */
-        .offer-section {
-            padding: 20px;
-            max-width: 420px;
-            margin: 0 auto;
-        }
-        
-        .offer-card {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            border: 2px solid var(--secondary);
-            border-radius: 24px;
-            padding: 28px;
+            padding: 8px 12px;
+            border-radius: 15px;
             text-align: center;
-        }
-        
-        .offer-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #065f46;
-            margin-bottom: 12px;
-        }
-        
-        .offer-text {
-            font-size: 14px;
-            color: #047857;
-            margin-bottom: 16px;
-        }
-        
-        .offer-count {
-            display: inline-block;
-            background: white;
-            padding: 10px 24px;
-            border-radius: 24px;
-            font-size: 22px;
-            font-weight: 700;
-            color: #dc2626;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* 法律 */
-        .legal {
-            padding: 30px 20px;
-            max-width: 420px;
-            margin: 0 auto;
-        }
-        
-        .legal-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 24px;
-        }
-        
-        .legal-card p {
             font-size: 12px;
-            color: var(--gray);
+            font-weight: 600;
             margin: 10px 0;
-            line-height: 1.6;
         }
         
-        .legal-card .warning {
-            color: #dc2626;
+        /* 사회적 증거 - 원래 스타일 */
+        .social-proof {
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border: 1px solid rgba(254,229,0,0.3);
+        }
+        
+        .proof-item {
+            text-align: center;
+            padding: 0 10px;
+            flex: 1;
+        }
+        
+        .proof-number {
+            display: block;
+            font-size: 20px;
+            font-weight: 900;
+            color: #FEE500;
+            letter-spacing: -0.5px;
+        }
+        
+        .proof-label {
+            display: block;
+            font-size: 10px;
+            color: rgba(255,255,255,0.9);
+            margin-top: 3px;
             font-weight: 500;
         }
         
-        .legal-card .info {
-            color: var(--primary);
-        }
-        
-        /* 页脚 */
-        footer {
+        /* 온라인 상태 */
+        .online-status {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 15px;
             text-align: center;
-            padding: 30px 20px;
-            color: var(--gray);
+            margin: 10px 0;
             font-size: 12px;
+            display: inline-block;
         }
         
-        /* 动画 */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #ff4444;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: blink 1.5s ease-in-out infinite;
         }
         
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
         
-        .hero-content > * {
-            animation: fadeInUp 0.6s ease-out backwards;
+        /* 복选框 그룹 */
+        .checkbox-group {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 0 auto 20px;
         }
         
-        .profile-card { animation-delay: 0.1s; }
-        .stats { animation-delay: 0.2s; }
-        .status-bar { animation-delay: 0.3s; }
-        .urgent-bar { animation-delay: 0.4s; }
-        .main-cta { animation-delay: 0.5s; }
-        
-        /* 数字跳动 */
-        .counter-pop {
-            animation: pop 0.3s ease-out;
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin: 6px 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
         }
         
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+        /* 리뷰 카드 */
+        .review-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 8px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            text-align: left;
         }
         
-        /* 响应式 */
+        /* 특별 혜택 */
+        .special-offer {
+            background: linear-gradient(135deg, #fff9e6, #fff3cd);
+            border: 2px solid #FEE500;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+        
+        /* 법적 고지 */
+        .legal-notice {
+            background: #fff9e6;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 11px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .legal-list {
+            text-align: left;
+            padding-left: 20px;
+        }
+        
+        /* 푸터 */
+        .page-footer {
+            text-align: center;
+            color: #999;
+            font-size: 10px;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+        }
+        
+        /* 애니메이션 */
+        @keyframes group-shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-3px); }
+            40%, 60% { transform: translateX(3px); }
+        }
+        
+        @keyframes checkbox-red-blink {
+            0%, 100% { border-color: #999; box-shadow: none; }
+            50% { border-color: #ff3333; box-shadow: 0 0 3px #ff3333; }
+        }
+        
+        .group-shake {
+            animation: group-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+        
+        .checkbox-blink {
+            animation: checkbox-red-blink 0.5s ease-in-out infinite;
+        }
+        
+        /* 모바일 최적화 */
         @media (max-width: 480px) {
-            .hero { padding: 40px 16px; }
-            .profile-card { padding: 24px; }
-            .stats { gap: 8px; }
-            .stat-number { font-size: 18px; }
-            .channel-name { font-size: 22px; }
+            .container {
+                margin: 0 10px;
+            }
+            
+            .benefits-container,
+            .checkbox-group,
+            .reviews-section,
+            .special-offer {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="gradient-bg"></div>
-    
-    <section class="hero">
-        <div class="hero-content">
-            <!-- 头像卡片 -->
-            <div class="profile-card">
-                <img src="static/picture/tghr.jpg" alt="프로필" class="avatar">
-                <div class="verified-badge">✓ 인증완료</div>
-                <h1 class="channel-name">투자 정보 채널</h1>
-                <p class="channel-desc">매일 아침 무료 시장 브리핑과 종목 분석을 받아보세요</p>
+    <div class="container">
+        <!-- 헤더 섹션 -->
+        <div class="header-section">
+            <!-- 프로필 이미지 + 인증 -->
+            <div style="margin-bottom: 15px;">
+                <div style="position: relative; display: inline-block;">
+                    <img src="static/picture/tghr.jpg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #FEE500; object-fit: cover;"> 
+                    <span style="position: absolute; bottom: 0px; right: 0px; background: #4CAF50; color: white; padding: 2px 8px; border-radius: 8px; font-size: 9px; font-weight: 700; border: 2px solid #1e3a5f;">✓ 인증</span>
+                </div>
+                <h1 style="color: white; font-size: 20px; margin: 10px 0 6px; font-weight: 700;">염승환 투자 정보 채널</h1>
+                <p style="color:white; font-size:14px;">시장 브리핑 · 종목 정보 · 참고용 리서치</p>
+            </div>
+            
+            <!-- 사회적 증거 -->
+            <div class="social-proof">
+                <div class="proof-item">
+                    <span class="proof-number">수천명+</span>
+                    <span class="proof-label">채널 회원</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-number">높은</span>
+                    <span class="proof-label">적중률</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-number">우수한</span>
+                    <span class="proof-label">최근 성과</span>
+                </div>
+            </div>
+            
+            <!-- 온라인 상태 -->
+            <div class="online-status">
+                <span class="status-dot"></span> 현재 <strong style="color: #FEE500;" id="onlineCount">150</strong> 명 온라인
+            </div>
+            
+            <!-- 긴박감 배너 -->
+            <div class="urgency-banner">
+                🔥 오늘 남은 무료 진단 인원：<strong id="remainingSpots">49/50</strong>
+            </div>
+            
+            <!-- 주요 CTA 버튼 -->
+            <div style="margin: 15px 0 10px;">
+                <button class="cta-button" onclick="handleClick()">💬 카카오톡 채널 추가하고 '777' 보내기<br>➡️ 최신 시장 정보 바로 받아보기</button>
+                <p style="color: rgba(255,255,255,0.7); font-size: 10px; margin-top: 6px;">클릭 한 번으로 최신 투자 정보를 빠르게 확인하실 수 있습니다</p>
+            </div>
+        </div>
+        
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <!-- 혜택 리스트 -->
+            <div style="background: #f0f7ff; border: 2px solid #2d5a87; border-radius: 12px; padding: 18px; margin: 15px 0;">
+                <h3 style="color: #1a3a5f; font-size: 14px; margin: 0 0 12px 0; text-align: center; font-weight: 700;">📋 채널에서 제공하는 주요 정보</h3>
+                <div style="background: white; border-radius: 8px; padding: 12px;">
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin: 10px 0;">
+                        <span style="color: #4CAF50; font-size: 16px; font-weight: 700;">✔</span> 
+                        <span style="color: #333; font-size: 13px; line-height: 1.4;"><strong>매일 3개</strong> 강세 종목 브리핑</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin: 10px 0;">
+                        <span style="color: #4CAF50; font-size: 16px; font-weight: 700;">✔</span> 
+                        <span style="color: #333; font-size: 13px; line-height: 1.4;"><strong>보유 종목</strong> 무료 간단 진단 (선착순)</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin: 10px 0;">
+                        <span style="color: #4CAF50; font-size: 16px; font-weight: 700;">✔</span> 
+                        <span style="color: #333; font-size: 13px; line-height: 1.4;"><strong>하루 1회</strong> 매매 전략 & 종목 선정 팁 공유</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin: 10px 0;">
+                        <span style="color: #4CAF50; font-size: 16px; font-weight: 700;">✔</span> 
+                        <span style="color: #333; font-size: 13px; line-height: 1.4;"><strong>실시간</strong> 시황 및 테마 실시간 체크</span>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #666; font-size: 12px; margin-top: 12px;">많은 이용자분들이 참고용 정보로 활용하고 있습니다。<br>투자 판단은 개인의 책임하에 신중히 진행하시기 바랍니다.</p>
+            </div>
+            
+            <!-- 관심사 선택 -->
+            <div style="margin: 20px 0;">
+                <h3 style="color: #1a3a5f; font-size: 14px; margin: 0 0 12px 0; text-align: center; font-weight: 700;">📝 원하는 정보 선택</h3>
+                <div class="checkbox-group" id="checkboxGroup">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="option1" name="options" value="오늘의 강세 종목" checked style="width: 18px; height: 18px; accent-color: #2d5a87;"> 
+                        <span style="background: #2d5a87; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;">1</span> 
+                        <label for="option1" style="flex: 1; font-size: 13px; color: #333; margin: 0;">오늘의 강세 종목 받기</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="option2" name="options" value="저평가 유망 종목 분석" checked style="width: 18px; height: 18px; accent-color: #2d5a87;"> 
+                        <span style="background: #2d5a87; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;">2</span> 
+                        <label for="option2" style="flex: 1; font-size: 13px; color: #333; margin: 0;">저평가 유망 종목 분석</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="option3" name="options" value="실전 매매 전략 배우기" checked style="width: 18px; height: 18px; accent-color: #2d5a87;"> 
+                        <span style="background: #2d5a87; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;">3</span> 
+                        <label for="option3" style="flex: 1; font-size: 13px; color: #333; margin: 0;">실전 매매 전략 배우기</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="option4" name="options" value="내 종목 무료 진단" checked style="width: 18px; height: 18px; accent-color: #2d5a87;"> 
+                        <span style="background: #2d5a87; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;">4</span> 
+                        <label for="option4" style="flex: 1; font-size: 13px; color: #333; margin: 0;">내 종목 무료 진단 받기</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 중간 CTA 버튼 -->
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="cta-button" onclick="handleClick()">💬 카카오톡 채널 추가하고 '777' 보내기<br>➡️ 최신 시장 정보 바로 받아보기</button>
+            </div>
+            
+            <!-- 사용자 평가 -->
+            <div style="margin: 20px 0;">
+                <h3 style="color: #1a3a5f; font-size: 14px; margin: 0 0 12px 0; text-align: center; font-weight: 700;">⭐ 회원들의 생생한 후기</h3>
+                <div class="review-card">
+                    <p style="color: #333; font-size: 13px; line-height: 1.4; margin: 0 0 6px 0; font-style: italic;">📈 "매일 아침 받는 종목 분석 덕분에 투자 결정이 훨씬 쉬워졌어요"</p>
+                    <p style="color: #666; font-size: 11px; margin: 0; font-weight: 600;">- 김** 님 (42세, 직장인)</p>
+                </div>
+                <div class="review-card">
+                    <p style="color: #333; font-size: 13px; line-height: 1.4; margin: 0 0 6px 0; font-style: italic;">📊 "초보자도 이해하기 쉬운 설명으로 투자 공부가 재미있어졌어요"</p>
+                    <p style="color: #666; font-size: 11px; margin: 0; font-weight: 600;">- 이** 님 (35세, 주부)</p>
+                </div>
+                <div class="review-card">
+                    <p style="color: #333; font-size: 13px; line-height: 1.4; margin: 0 0 6px 0; font-style: italic;">🎯 "무료 서비스인데도 전문성 있는 정보 제공에 감동했습니다"</p>
+                    <p style="color: #666; font-size: 11px; margin: 0; font-weight: 600;">- 박** 님 (51세, 자영업)</p>
+                </div>
+            </div>
+            
+            <!-- 특별 혜택 영역 -->
+            <div class="special-offer">
+                <h3 style="color: #1a3a5f; font-size: 14px; margin: 0 0 12px 0; text-align: center; font-weight: 700;">🎁 지금 가입하면 특별 혜택!</h3>
+                <div class="urgency-banner">
+                    🔥 오늘 남은 무료 진단 인원：<strong id="remainingSpots2">49/50</strong>
+                </div>
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="cta-button" onclick="handleClick()">💬 카카오톡 채널 추가하고 '777' 보내기<br>➡️ 최신 시장 정보 바로 받아보기</button>
+                </div>
                 
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-number">3,500+</span>
-                        <span class="stat-label">구독자</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">每日</span>
-                        <span class="stat-label">更新</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">무료</span>
-                        <span class="stat-label">제공</span>
-                    </div>
+                <!-- 신뢰 보장 -->
+                <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border: 2px solid #4caf50; border-radius: 10px; padding: 12px; margin: 15px 0; text-align: center;">
+                    <span style="font-size: 24px; display: block; margin-bottom: 6px;">🔒</span>
+                    <p style="margin: 0; font-weight: 600; color: #2e7d32; font-size: 12px;">100% 무료 · 개인정보 안전 · 언제든 탈퇴 가능</p>
                 </div>
             </div>
             
-            <!-- 状态条 -->
-            <div class="status-bar">
-                <div class="status-dot"></div>
-                <div class="status-text">
-                    현재 <strong id="onlineCount">150</strong>명 온라인
-                </div>
+            <!-- 법적 고지 -->
+            <div class="legal-notice">
+                <p style="margin: 6px 0; color: #333;">⚠️ 버튼 클릭 시 KakaoTalk 채널로 이동합니다.</p>
+                <p style="margin: 6px 0; color: #333;">⚠️ 모든 정보는 무료로 제공됩니다.</p>
+                <p style="margin: 6px 0; color: #333;">⚠️ 본 자료는 투자 참고용 정보입니다.</p>
+                <p style="margin: 6px 0; color: #333;">⚠️ 과거 성과는 미래 수익을 보장하지 않습니다.</p>
+                <p style="margin: 6px 0; color: #333;">⚠️ 최종 투자 판단의 책임은 본인에게 있습니다.</p>
+                <p style="margin: 6px 0; color: #d32f2f; font-weight: 600;">⚠️ 사기 주의: 유료 가입을 요구하면 사기일 수 있으니 주의하세요.</p>
+                <p style="margin: 6px 0; color: #1976d2; font-weight: 600;">ℹ️ 본 서비스는 금융투자업에 해당하지 않습니다.</p>
             </div>
             
-            <!-- 紧迫感 -->
-            <div class="urgent-bar">
-                <span>🔥 오늘 남은 무료 진단:</span>
-                <strong id="remainingSpots">49/50</strong>
+            <!-- 하단 저작권 정보 -->
+            <div class="page-footer">
+                <p style="margin: 4px 0;">© 2026 염승환 투자클럽. All rights reserved.</p>
+                <p style="margin: 4px 0;">본 페이지는 투자 권유가 아닌 정보 제공을 목적으로 합니다.</p>
             </div>
-            
-            <!-- 主按钮 -->
-            <button class="main-cta" onclick="handleClick()">
-                💬 카카오톡으로 시작하기
-            </button>
-            <p class="cta-sub">1분컷! 추가 비용 없이 바로 시작</p>
         </div>
-    </section>
-    
-    <!-- 特色 -->
-    <section class="features">
-        <p class="section-title">이런 정보를 받아보세요</p>
-        
-        <div class="feature-card">
-            <div class="feature-header">
-                <div class="feature-icon blue">📈</div>
-                <h3 class="feature-title">실시간 시황 분석</h3>
-            </div>
-            <ul class="feature-list">
-                <li>아침 市场 동향 분석</li>
-                <li>테마별 종목 트렌드</li>
-                <li>기관外资买入동향</li>
-            </ul>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-header">
-                <div class="feature-icon green">🎯</div>
-                <h3 class="feature-title">초보자 위한 종목 추천</h3>
-            </div>
-            <ul class="feature-list">
-                <li>분석하기 쉬운 종목</li>
-                <li>리스크 관리 팁</li>
-                <li>실전 투자 전략</li>
-            </ul>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-header">
-                <div class="feature-icon purple">💡</div>
-                <h3 class="feature-title">무료教育资源</h3>
-            </div>
-            <ul class="feature-list">
-                <li>주식 용어 사전</li>
-                <li>투자 이론 강의</li>
-                <li>실패案例分享</li>
-            </ul>
-        </div>
-    </section>
-    
-    <!-- 选项 -->
-    <section class="options-section">
-        <div class="options-card">
-            <h3 class="options-title">어떤 정보를 가장 받고 싶으세요?</h3>
-            
-            <label class="option-item">
-                <input type="checkbox" class="option-checkbox" value="오늘의 강세 종목" checked>
-                <span class="option-text">오늘의 강세 종목 추천</span>
-                <span class="option-num">1</span>
-            </label>
-            
-            <label class="option-item">
-                <input type="checkbox" class="option-checkbox" value="시장 전망">
-                <span class="option-text">시장 전망 및 분석</span>
-                <span class="option-num">2</span>
-            </label>
-            
-            <label class="option-item">
-                <input type="checkbox" class="option-checkbox" value="투자 교육">
-                <span class="option-text">투자 교육 콘텐츠</span>
-                <span class="option-num">3</span>
-            </label>
-            
-            <label class="option-item">
-                <input type="checkbox" class="option-checkbox" value="종목 분석">
-                <span class="option-text">종목深度 분석</span>
-                <span class="option-num">4</span>
-            </label>
-        </div>
-    </section>
-    
-    <!-- 评价 -->
-    <section class="reviews">
-        <p class="section-title">구독자 후기</p>
-        
-        <div class="review-card">
-            <p class="review-text">매일 아침 받는 종목 분석 덕분에 투자 결정이 훨씬 쉬워졌어요. 초보자도 이해하기 쉬워요!</p>
-            <p class="review-author">- 김*현님</p>
-        </div>
-        
-        <div class="review-card">
-            <p class="review-text">무료인데 이렇게 좋은 정보를 주다니... 나머지 유료 그룹보다 더 좋았어요!</p>
-            <p class="review-author">- 이*영님</p>
-        </div>
-        
-        <div class="review-card">
-            <p class="review-text">초보자도 이해하기 쉬운 설명으로 투자 공부가 재미있어졌어요. 강추합니다!</p>
-            <p class="review-author">- 박*준님</p>
-        </div>
-    </section>
-    
-    <!-- 优惠 -->
-    <section class="offer-section">
-        <div class="offer-card">
-            <h3 class="offer-title">🎁 지금 가입하면?</h3>
-            <p class="offer-text">오늘만 무료 진단 기회!</p>
-            <div class="offer-count" id="remainingSpots2">49/50</div>
-        </div>
-    </section>
-    
-    <!-- 法律 -->
-    <section class="legal">
-        <div class="legal-card">
-            <p class="warning">⚠️ 유료 가입을 요구하면 사기일 수 있으니 주의하세요</p>
-            <p class="info">ℹ️ 본 서비스는 금융투자업에 해당하지 않습니다</p>
-            <p>본 페이지는 투자 권유가 아닌 정보 제공을 목적으로 합니다</p>
-            <p>투자 판단은 개인의 책임하에 신중히 진행하시기 바랍니다</p>
-        </div>
-    </section>
-    
-    <footer>
-        <p>© 2026 투자정보채널. All rights reserved.</p>
-    </footer>
-    
+    </div>
+
+
+
     <script>
-        // 计数器功能
+        let errorTimer = null;
+        const checkboxes = document.querySelectorAll('input[name="options"]');
+        const checkboxGroup = document.getElementById("checkboxGroup");
+
+        function handleClick() {
+            const checkedOptions = document.querySelectorAll('input[name="options"]:checked');
+            clearErrorState();
+            if (checkedOptions.length === 0) {
+                checkboxGroup.classList.remove("group-shake");
+                void checkboxGroup.offsetWidth;
+                checkboxGroup.classList.add("group-shake");
+                checkboxes.forEach((checkbox) => {
+                    checkbox.classList.remove("checkbox-blink");
+                    void checkbox.offsetWidth;
+                    checkbox.classList.add("checkbox-blink");
+                });
+                errorTimer = setTimeout(clearErrorState, 1500);
+            }
+            const selectedValues = Array.from(checkedOptions).map((checkbox) => checkbox.value).join(",");
+            if (selectedValues) {
+                if (typeof gotoUrl === 'function') { gotoUrl(""); } else { console.log('click') }
+            }
+        }
+
+        function clearErrorState() {
+            if (errorTimer) {
+                clearTimeout(errorTimer);
+                errorTimer = null;
+            }
+            checkboxGroup.classList.remove("group-shake");
+            checkboxes.forEach((checkbox) => {
+                checkbox.classList.remove("checkbox-blink");
+            });
+        }
+
+        // 随机间隔计数器 - 带上限/下限
         function initializeCounters() {
             const STORAGE_KEY_ONLINE = 'counter_online';
             const STORAGE_KEY_REMAINING = 'counter_remaining';
-            const MAX_ONLINE = 300;
-            const MIN_REMAINING = 5;
+            
+            const MAX_ONLINE = 300;   // 在线人数上限
+            const MIN_REMAINING = 5;  // 剩余名额下限
             
             const onlineCountEl = document.getElementById("onlineCount");
             const remainingSpots1 = document.getElementById("remainingSpots");
             const remainingSpots2 = document.getElementById("remainingSpots2");
             
-            // 在线人数
+            // 获取或初始化在线人数
             let onlineCount = parseInt(localStorage.getItem(STORAGE_KEY_ONLINE));
             if (isNaN(onlineCount)) {
                 onlineCount = 150;
                 localStorage.setItem(STORAGE_KEY_ONLINE, onlineCount);
             }
             
-            // 剩余名额
+            // 获取或初始化剩余名额
             let remainingCount = parseInt(localStorage.getItem(STORAGE_KEY_REMAINING));
             if (isNaN(remainingCount)) {
                 remainingCount = 49;
                 localStorage.setItem(STORAGE_KEY_REMAINING, remainingCount);
             }
             
-            // 显示
+            // 更新显示
             if (onlineCountEl) onlineCountEl.textContent = onlineCount;
             if (remainingSpots1) remainingSpots1.textContent = remainingCount + "/50";
             if (remainingSpots2) remainingSpots2.textContent = remainingCount + "/50";
             
-            // 随机间隔
+            // 随机秒数函数 (3-9秒之间随机)
             function getRandomInterval() {
-                return Math.floor(Math.random() * 6000) + 3000;
+                return Math.floor(Math.random() * 6000) + 3000; // 3000-9000ms
             }
             
-            // 在线人数更新
+            // 在线人数 - 随机间隔更新，上限300
             function scheduleOnlineUpdate() {
                 setTimeout(() => {
                     if (onlineCount < MAX_ONLINE) {
                         onlineCount++;
-                        if (onlineCountEl) {
-                            onlineCountEl.textContent = onlineCount;
-                            onlineCountEl.classList.remove("counter-pop");
-                            void onlineCountEl.offsetWidth;
-                            onlineCountEl.classList.add("counter-pop");
-                        }
+                        if (onlineCountEl) onlineCountEl.textContent = onlineCount;
                         localStorage.setItem(STORAGE_KEY_ONLINE, onlineCount);
                     }
-                    if (onlineCount < MAX_ONLINE) scheduleOnlineUpdate();
+                    if (onlineCount < MAX_ONLINE) {
+                        scheduleOnlineUpdate(); // 继续调度
+                    }
                 }, getRandomInterval());
             }
             scheduleOnlineUpdate();
             
-            // 剩余名额更新
+            // 剩余名额 - 随机间隔更新，下限5
             function scheduleRemainingUpdate() {
                 setTimeout(() => {
                     if (remainingCount > MIN_REMAINING) {
                         remainingCount--;
-                        if (remainingSpots1) {
-                            remainingSpots1.textContent = remainingCount + "/50";
-                            remainingSpots1.classList.remove("counter-pop");
-                            void remainingSpots1.offsetWidth;
-                            remainingSpots1.classList.add("counter-pop");
-                        }
-                        if (remainingSpots2) {
-                            remainingSpots2.textContent = remainingCount + "/50";
-                            remainingSpots2.classList.remove("counter-pop");
-                            void remainingSpots2.offsetWidth;
-                            remainingSpots2.classList.add("counter-pop");
-                        }
+                        if (remainingSpots1) remainingSpots1.textContent = remainingCount + "/50";
+                        if (remainingSpots2) remainingSpots2.textContent = remainingCount + "/50";
                         localStorage.setItem(STORAGE_KEY_REMAINING, remainingCount);
                     }
-                    if (remainingCount > MIN_REMAINING) scheduleRemainingUpdate();
+                    if (remainingCount > MIN_REMAINING) {
+                        scheduleRemainingUpdate(); // 继续调度
+                    }
                 }, getRandomInterval());
             }
             scheduleRemainingUpdate();
         }
-        
-        // 按钮点击
-        function handleClick() {
-            const checkedOptions = document.querySelectorAll('.option-checkbox:checked');
-            if (checkedOptions.length === 0) {
-                alert('항목을 하나 이상 선택해주세요!');
-                return;
-            }
-            // 原有跳转功能保留
-            if (typeof gotoUrl === 'function') {
-                gotoUrl("");
-            } else {
-                console.log('按钮点击，选项: ', Array.from(checkedOptions).map(c => c.value).join(', '));
-            }
-        }
-        
+
         document.addEventListener('DOMContentLoaded', initializeCounters);
     </script>
 </body>
